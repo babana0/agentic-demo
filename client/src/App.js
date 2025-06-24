@@ -54,25 +54,23 @@ function App() {
   return (
     <div style={styles.page}>
       <div style={styles.container}>
-        <h1 style={styles.title}>📤 Submit Your Claim</h1>
-
-        {/* Toggle */}
-        <div style={styles.section}>
-          <label style={styles.label}>Environment</label>
-          <div style={styles.toggleRow}>
-            <span style={{ fontWeight: 500, color: useProduction ? "#0f172a" : "#64748b" }}>Production</span>
-            <label style={styles.switch}>
-              <input
-                type="checkbox"
-                checked={!useProduction}
-                onChange={() => setUseProduction((prev) => !prev)}
-                style={styles.hiddenCheckbox}
-              />
-              <span style={styles.slider}></span>
-            </label>
-            <span style={{ fontWeight: 500, color: !useProduction ? "#0f172a" : "#64748b" }}>Development</span>
+        {/* Toggle Switch */}
+        <div style={styles.toggleWrapper}>
+          <div
+            style={{
+              ...styles.toggle,
+              backgroundColor: useProduction ? "#4ade80" : "#f87171",
+              justifyContent: useProduction ? "flex-start" : "flex-end",
+            }}
+            onClick={() => setUseProduction((prev) => !prev)}
+          >
+            <div style={styles.toggleThumb}>
+              <span style={styles.toggleText}>{useProduction ? "Production" : "Test"}</span>
+            </div>
           </div>
         </div>
+
+        <h1 style={styles.title}>📤 Submit Your Claim</h1>
 
         {/* Email */}
         <div style={styles.section}>
@@ -156,6 +154,7 @@ const styles = {
     fontFamily: "system-ui, sans-serif",
   },
   container: {
+    position: "relative",
     width: "100%",
     maxWidth: "720px",
     backgroundColor: "#ffffff",
@@ -163,6 +162,36 @@ const styles = {
     borderRadius: "16px",
     boxShadow: "0 8px 20px rgba(0, 0, 0, 0.05)",
     border: "1px solid #e2e8f0",
+  },
+  toggleWrapper: {
+    position: "absolute",
+    top: "1rem",
+    right: "1rem",
+  },
+  toggle: {
+    width: "120px",
+    height: "36px",
+    borderRadius: "18px",
+    display: "flex",
+    alignItems: "center",
+    cursor: "pointer",
+    padding: "0 4px",
+    transition: "all 0.3s ease",
+  },
+  toggleThumb: {
+    height: "28px",
+    backgroundColor: "#fff",
+    borderRadius: "14px",
+    display: "flex",
+    alignItems: "center",
+    padding: "0 12px",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+    transition: "all 0.3s ease",
+  },
+  toggleText: {
+    fontSize: "0.85rem",
+    fontWeight: 600,
+    color: "#1e293b",
   },
   title: {
     fontSize: "1.75rem",
@@ -268,35 +297,6 @@ const styles = {
     maxHeight: "90vh",
     borderRadius: "12px",
     boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
-  },
-  toggleRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: "1rem",
-    marginTop: "0.5rem",
-  },
-  switch: {
-    position: "relative",
-    display: "inline-block",
-    width: "50px",
-    height: "26px",
-  },
-  hiddenCheckbox: {
-    opacity: 0,
-    width: 0,
-    height: 0,
-  },
-  slider: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "#cbd5e1",
-    borderRadius: "34px",
-    transition: ".4s",
-    cursor: "pointer",
-    boxShadow: "inset 0 0 2px #00000033",
   },
 };
 
