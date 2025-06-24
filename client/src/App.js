@@ -54,19 +54,18 @@ function App() {
   return (
     <div style={styles.page}>
       <div style={styles.container}>
-        {/* Toggle Switch */}
+        {/* Toggle Switch with External Label */}
         <div style={styles.toggleWrapper}>
+          <span style={styles.toggleLabel}>{useProduction ? "Live" : "Test"}</span>
           <div
             style={{
               ...styles.toggle,
-              backgroundColor: useProduction ? "#4ade80" : "#f87171",
               justifyContent: useProduction ? "flex-start" : "flex-end",
+              backgroundColor: useProduction ? "#4ade80" : "#f87171",
             }}
             onClick={() => setUseProduction((prev) => !prev)}
           >
-            <div style={styles.toggleThumb}>
-              <span style={styles.toggleText}>{useProduction ? "Production" : "Test"}</span>
-            </div>
+            <div style={styles.toggleThumb}></div>
           </div>
         </div>
 
@@ -167,27 +166,38 @@ const styles = {
     position: "absolute",
     top: "1rem",
     right: "1rem",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
   },
+
+  toggleLabel: {
+    fontSize: "0.9rem",
+    fontWeight: 600,
+    color: "#1e293b",
+  },
+
   toggle: {
-    width: "120px",
-    height: "36px",
-    borderRadius: "18px",
+    width: "50px",
+    height: "26px",
+    borderRadius: "999px",
     display: "flex",
     alignItems: "center",
+    padding: "2px",
     cursor: "pointer",
-    padding: "0 4px",
-    transition: "all 0.3s ease",
+    transition: "background-color 0.3s ease",
+    boxSizing: "border-box",
   },
+
   toggleThumb: {
-    height: "28px",
-    backgroundColor: "#fff",
-    borderRadius: "14px",
-    display: "flex",
-    alignItems: "center",
-    padding: "0 12px",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
-    transition: "all 0.3s ease",
+    width: "22px",
+    height: "22px",
+    backgroundColor: "#ffffff",
+    borderRadius: "50%",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+    transition: "transform 0.3s ease",
   },
+
   toggleText: {
     fontSize: "0.85rem",
     fontWeight: 600,
