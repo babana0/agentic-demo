@@ -6,6 +6,11 @@ function App() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
   const [zoomedImage, setZoomedImage] = useState(null);
+  const [useProduction, setUseProduction] = useState(true);
+
+  const devUrl = "https://sem89.app.n8n.cloud/webhook-test/upload-claim-form";
+  const productionUrl = "https://sem89.app.n8n.cloud/webhook/upload-claim-form";
+  const uploadUrl = useProduction ? productionUrl : devUrl;
 
   const handleChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -35,7 +40,7 @@ function App() {
 
     try {
       setStatus("⏳ Uploading...");
-      await axios.post("https://sem89.app.n8n.cloud/webhook-test/upload-claim-form", formData, {
+      await axios.post(uploadUrl, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setStatus("✅ Upload successful!");
@@ -51,6 +56,25 @@ function App() {
       <div style={styles.container}>
         <h1 style={styles.title}>📤 Submit Your Claim</h1>
 
+        {/* Toggle */}
+        <div style={styles.section}>
+          <label style={styles.label}>Environment</label>
+          <div style={styles.toggleRow}>
+            <span style={{ fontWeight: 500, color: useProduction ? "#0f172a" : "#64748b" }}>Production</span>
+            <label style={styles.switch}>
+              <input
+                type="checkbox"
+                checked={!useProduction}
+                onChange={() => setUseProduction((prev) => !prev)}
+                style={styles.hiddenCheckbox}
+              />
+              <span style={styles.slider}></span>
+            </label>
+            <span style={{ fontWeight: 500, color: !useProduction ? "#0f172a" : "#64748b" }}>Development</span>
+          </div>
+        </div>
+
+        {/* Email */}
         <div style={styles.section}>
           <label style={styles.label}>Email Address</label>
           <input
@@ -62,11 +86,13 @@ function App() {
           />
         </div>
 
+        {/* File Upload */}
         <div style={styles.section}>
           <label style={styles.label}>Upload Images</label>
           <input type="file" accept="image/*" multiple onChange={handleChange} style={styles.fileInput} />
         </div>
 
+        {/* Previews */}
         {images.length > 0 && (
           <div style={styles.grid}>
             {images.map((file, index) => (
@@ -83,6 +109,7 @@ function App() {
           </div>
         )}
 
+        {/* Submit */}
         <button
           onClick={handleUpload}
           style={{
@@ -95,6 +122,7 @@ function App() {
           🚀 Submit Claim
         </button>
 
+        {/* Status */}
         {status && (
           <p
             style={{
@@ -107,6 +135,7 @@ function App() {
         )}
       </div>
 
+      {/* Zoom Modal */}
       {zoomedImage && (
         <div style={styles.modal} onClick={() => setZoomedImage(null)}>
           <img src={zoomedImage} alt="zoomed" style={styles.modalImage} />
@@ -154,7 +183,6 @@ const styles = {
   input: {
     width: "100%",
     padding: "0.75rem 1rem",
-    paddingRight: "1rem", // Ensure right padding
     fontSize: "1rem",
     border: "1px solid #cbd5e1",
     borderRadius: "8px",
@@ -240,6 +268,35 @@ const styles = {
     maxHeight: "90vh",
     borderRadius: "12px",
     boxShadow: "0 8px 24px rgba(0,0,0,0.4)",
+  },
+  toggleRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "1rem",
+    marginTop: "0.5rem",
+  },
+  switch: {
+    position: "relative",
+    display: "inline-block",
+    width: "50px",
+    height: "26px",
+  },
+  hiddenCheckbox: {
+    opacity: 0,
+    width: 0,
+    height: 0,
+  },
+  slider: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "#cbd5e1",
+    borderRadius: "34px",
+    transition: ".4s",
+    cursor: "pointer",
+    boxShadow: "inset 0 0 2px #00000033",
   },
 };
 
